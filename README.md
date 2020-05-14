@@ -14,16 +14,24 @@ Docker or Java IDE with Gradle support
 
 ### Starting
 
-Start using docker-compose
+Start using docker-compose and H2
 
 ```
-docker-compose up
+docker-compose up -d timetracker_api
 ```
 
-or using Gradle
+for version with PostgreSQL (timetracker_api service must be started with delay due to dependency on db)
+```
+docker-compose build --build-arg DB_TYPE=pg timetracker_api
+docker-compose up timetracker_db
+docker-compose up timetracker_admin
+docker-compose up timetracker_api
+```
+
+or using Gradle (JDK must be installed)
 
 ```
-gradlew run
+gradlew build runJar
 ```
 
 **or using Java IDE**

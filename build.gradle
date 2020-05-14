@@ -25,6 +25,10 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 }
+task runJar(type: JavaExec) {
+    main = "-jar";
+    args jar.archivePath
+}
 tasks.withType(JavaCompile) {
 	options.compilerArgs << "-Xlint:unchecked"
 }

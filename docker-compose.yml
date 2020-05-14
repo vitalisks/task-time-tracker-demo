@@ -2,13 +2,11 @@ version: "2.4"
 services:
     timetracker_api:
         build:
-            context: .
+            context: .            
         image: timetracker_api:1.0
         container_name: timetracker_api
         mem_limit: 500M
-        memswap_limit: 1024M        
-        #depends_on: 
-        #    - timetracker-db
+        memswap_limit: 1024M
         ports: 
             - "8080:8080"
         networks: 
