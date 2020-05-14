@@ -1,0 +1,3 @@
+FROM postgres:11.7
+#copy init scripts if required for more advanced setup
+COPY ./config/postgres/*.sql /docker-entrypoint-initdb.d/

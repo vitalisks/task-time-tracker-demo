@@ -1,0 +1,50 @@
+version: "2.4"
+services:
+    timetracker_api:
+        build:
+            context: .
+        image: timetracker_api:1.0
+        container_name: timetracker_api
+        mem_limit: 500M
+        memswap_limit: 1024M        
+        #depends_on: 
+        #    - timetracker-db
+        ports: 
+            - "8080:8080"
+        networks: 
+            - timetracker
+
+    timetracker_db:
+        build:      
+            context: .
+            dockerfile: ./Dockerfile-pg
+        restart: always
+        environment:
+            POSTGRES_DB: timetracker
+            POSTGRES_PASSWORD: test      
+        container_name: timetracker_db        
+        image: timetracker_db:1.0
+        #expose ports per need, otwerise use provided admin container
+        #ports:
+        #    - "5432:5432"
+        mem_limit: 100M
+        memswap_limit: 200M
+        networks:
+            timetracker:
+                aliases: 
+                    - timetracker-db
+
+    timetracker_pgadmin:
+        image: dpage/pgadmin4
+        container_name: timetracker_db_admin
+        environment: 
+            PGADMIN_DEFAULT_EMAIL: admin@example.com
+            PGADMIN_DEFAULT_PASSWORD: password            
+        networks:
+            - timetracker
+        ports:
+            - "5050:80"                
+networks: 
+    timetracker:
+        driver: bridge
+        name: timetracker_net                
