@@ -1,6 +1,6 @@
 package com.prv.art.tasks.timetracker.exceptions.handler;
 
-import com.prv.art.tasks.timetracker.exceptions.definition.EmptyErrorInfo;
+import com.prv.art.tasks.timetracker.exceptions.definition.DefaultErrorInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 
 @ControllerAdvice
@@ -29,10 +32,17 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ResponseStatusException.class)
     @ResponseBody
-    EmptyErrorInfo
-    handleApplicationError(HttpServletRequest req,Exception ex){
-        //return empty object, so that default error info propagated
-        return new EmptyErrorInfo();
-    }
+    DefaultErrorInfo
+    handleApplicationError(HttpServletRequest req, ResponseStatusException ex) {
+        List<Consumer<DefaultErrorInfo>> builder = Arrays.asList(
+                x -> x.setMessage(ex.getReason()),
+                x -> x.setError(ex.getStatus().getReasonPhrase()),
+                x -> x.setStatus(ex.getStatus().value()),
+                x -> x.setPath(req.getRequestURI())
+        );
+        return DefaultErrorInfo.buildError(
+                builder
+        );
 
+    }
 }
