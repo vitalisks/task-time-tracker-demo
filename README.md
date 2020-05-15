@@ -47,4 +47,4 @@ Access to pgadmin http://localhost:5050 (check connection details in the docker-
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
